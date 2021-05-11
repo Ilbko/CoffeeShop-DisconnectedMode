@@ -84,30 +84,35 @@ namespace CoffeeShop_DisconnectedMode_
             this.CostRangeToolStripMenuItem.Name = "CostRangeToolStripMenuItem";
             this.CostRangeToolStripMenuItem.Size = new System.Drawing.Size(228, 22);
             this.CostRangeToolStripMenuItem.Text = "Себестоимость в диапазоне";
+            this.CostRangeToolStripMenuItem.Click += new System.EventHandler(this.CostRangeToolStripMenuItem_Click);
             // 
             // GramRangeToolStripMenuItem
             // 
             this.GramRangeToolStripMenuItem.Name = "GramRangeToolStripMenuItem";
             this.GramRangeToolStripMenuItem.Size = new System.Drawing.Size(228, 22);
             this.GramRangeToolStripMenuItem.Text = "Граммы в диапазоне";
+            this.GramRangeToolStripMenuItem.Click += new System.EventHandler(this.GramRangeToolStripMenuItem_Click);
             // 
             // ByCountryToolStripMenuItem
             // 
             this.ByCountryToolStripMenuItem.Name = "ByCountryToolStripMenuItem";
             this.ByCountryToolStripMenuItem.Size = new System.Drawing.Size(228, 22);
             this.ByCountryToolStripMenuItem.Text = "По странам";
+            this.ByCountryToolStripMenuItem.Click += new System.EventHandler(this.ByCountryToolStripMenuItem_Click);
             // 
             // Top3ExpensiveSortToolStripMenuItem
             // 
             this.Top3ExpensiveSortToolStripMenuItem.Name = "Top3ExpensiveSortToolStripMenuItem";
             this.Top3ExpensiveSortToolStripMenuItem.Size = new System.Drawing.Size(228, 22);
             this.Top3ExpensiveSortToolStripMenuItem.Text = "Топ-3 дорогих сортов";
+            this.Top3ExpensiveSortToolStripMenuItem.Click += new System.EventHandler(this.Top3ExpensiveSortToolStripMenuItem_Click);
             // 
             // Top3CheapestSortToolStripMenuItem
             // 
             this.Top3CheapestSortToolStripMenuItem.Name = "Top3CheapestSortToolStripMenuItem";
             this.Top3CheapestSortToolStripMenuItem.Size = new System.Drawing.Size(228, 22);
             this.Top3CheapestSortToolStripMenuItem.Text = "Топ-3 дешёвых сортов";
+            this.Top3CheapestSortToolStripMenuItem.Click += new System.EventHandler(this.Top3CheapestSortToolStripMenuItem_Click);
             // 
             // поискПоЗапросамToolStripMenuItem
             // 

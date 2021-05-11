@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CoffeeShop_DisconnectedMode_.View;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -23,6 +24,12 @@ namespace CoffeeShop_DisconnectedMode_.Control
             {
                 box.Text += $"{item.Key} : {item.Value}\r\n";
             }
+        }
+
+        internal void TextHandler(TextBox sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar != 8 && !char.IsDigit(e.KeyChar) && !(e.KeyChar == '.' && !sender.Text.Contains(".")))
+                e.Handled = true;
         }
 
         internal void FindCherry(DataGridView dataGridView2)
@@ -101,6 +108,79 @@ namespace CoffeeShop_DisconnectedMode_.Control
             Communication.coffeeTableFound = temp.AsEnumerable().Reverse().Take(3).CopyToDataTable();
 
             Updater(dataGridView2);
+        }
+
+        internal void ButtonFind(int mode, SearchForm searchForm, DataGridView dataGridView2)
+        {
+            try
+            {
+                switch (mode)
+                {
+                    case 1:
+                        {
+                            double price1 = double.Parse(searchForm.Controls["textBox1"].Text);
+                            double price2 = double.Parse(searchForm.Controls["textBox2"].Text);
+                            if (price1 > price2)
+                            {
+                                double temp = price1;
+                                price1 = price2;
+                                price2 = temp;
+                            }
+
+                            Communication.coffeeTableFound = Communication.coffeeTable.AsEnumerable()
+                                .Where(x => x["Coffee_Price"] as double? >= price1 && x["Coffee_Price"] as double? <= price2)
+                                .CopyToDataTable();
+                            break;
+                        }
+                    case 2:
+                        {
+                            int gram1 = int.Parse(searchForm.Controls["numericUpDown1"].Text);
+                            int gram2 = int.Parse(searchForm.Controls["numericUpDown2"].Text);
+                            if (gram1 > gram2)
+                            {
+                                int temp = gram1;
+                                gram1 = gram2;
+                                gram2 = temp;
+                            }
+
+                            Communication.coffeeTableFound = Communication.coffeeTable.AsEnumerable()
+                                .Where(x => x["Coffee_Grams"] as int? >= gram1 && x["Coffee_Grams"] as int? <= gram2)
+                                .CopyToDataTable();
+                            break;
+                        }
+                    case 3:
+                        {
+                            Communication.coffeeTableFound = Communication.coffeeTable.AsEnumerable()
+                                .Where(x => (x["Coffee_Country"] as string).ToLower() == ((searchForm.Controls["comboBox1"] as ComboBox).SelectedItem as string))
+                                .CopyToDataTable();
+                            break;
+                        }
+                    case 4:
+                        {
+                            DataTable temp = Communication.coffeeTable.AsEnumerable()
+                                .Where(x => (x["Coffee_Type"] as string).ToLower() == ((searchForm.Controls["comboBox2"] as ComboBox).SelectedItem as string))
+                                .OrderBy(y => y["Coffee_Price"])
+                                .Reverse()
+                                .CopyToDataTable();
+
+                            Communication.coffeeTableFound = temp.AsEnumerable().Take(3).CopyToDataTable();
+                            break;
+                        }
+                    case 5:
+                        {
+                            DataTable temp = Communication.coffeeTable.AsEnumerable()
+                                .Where(x => (x["Coffee_Type"] as string).ToLower() == ((searchForm.Controls["comboBox2"] as ComboBox).SelectedItem as string))
+                                .OrderBy(y => y["Coffee_Price"])
+                                .CopyToDataTable();
+
+                            Communication.coffeeTableFound = temp.AsEnumerable().Take(3).CopyToDataTable();
+                            break;
+                        }
+                }
+            } catch (InvalidOperationException e) { }
+
+            Updater(dataGridView2);
+            searchForm.Dispose();
         }
     }
 }

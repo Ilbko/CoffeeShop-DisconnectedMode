@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CoffeeShop_DisconnectedMode_.Model;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -17,15 +18,17 @@ namespace CoffeeShop_DisconnectedMode_.Control
 
         static Communication()
         {
-            using (SqlConnection conn = new SqlConnection(connStr))
-            {
-                conn.Open();
+            //using (SqlConnection conn = new SqlConnection(connStr))
+            //{
+            //    conn.Open();
 
-                SqlDataAdapter adapter = new SqlDataAdapter(sqlComm, conn);
-                DataSet set = new DataSet();
-                adapter.Fill(set);
-                coffeeTable = set.Tables[0];
-            }
+            //    SqlDataAdapter adapter = new SqlDataAdapter(sqlComm, conn);
+            //    DataSet set = new DataSet();
+            //    adapter.Fill(set);
+            //    coffeeTable = set.Tables[0];
+            //}
+
+            CoffeeModel.Init(ref coffeeTable);
         }
     }
 }

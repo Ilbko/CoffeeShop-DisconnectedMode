@@ -1,4 +1,5 @@
 ﻿using CoffeeShop_DisconnectedMode_.Control;
+using CoffeeShop_DisconnectedMode_.View;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,7 +25,6 @@ namespace CoffeeShop_DisconnectedMode_
 
         private void CherryCoffeeToolStripMenuItem_Click(object sender, EventArgs e) => logic.FindCherry(this.dataGridView2);
 
-
         private void Top3CheapestToolStripMenuItem_Click(object sender, EventArgs e) => logic.FindTop3CheapestSort(this.dataGridView2);
 
         private void Top3CountriesSortToolStripMenuItem_Click(object sender, EventArgs e) => logic.FindTop3CountriesSort(this.InfoTextBox);
@@ -38,5 +38,15 @@ namespace CoffeeShop_DisconnectedMode_
         private void Top3GramToolStripMenuItem_Click(object sender, EventArgs e) => logic.FindTop3Gram(this.dataGridView2);
 
         private void Top3ExpensiveToolStripMenuItem_Click(object sender, EventArgs e) => logic.FindTop3Expensive(this.dataGridView2);
+
+        private void CostRangeToolStripMenuItem_Click(object sender, EventArgs e) => new SearchForm(1, dataGridView2).ShowDialog();
+
+        private void GramRangeToolStripMenuItem_Click(object sender, EventArgs e) => new SearchForm(2, dataGridView2).ShowDialog();
+
+        private void ByCountryToolStripMenuItem_Click(object sender, EventArgs e) => new SearchForm(3, dataGridView2).ShowDialog();
+
+        private void Top3ExpensiveSortToolStripMenuItem_Click(object sender, EventArgs e) => new SearchForm(4, dataGridView2).ShowDialog();
+
+        private void Top3CheapestSortToolStripMenuItem_Click(object sender, EventArgs e) => new SearchForm(5, dataGridView2).ShowDialog();
     }
 }

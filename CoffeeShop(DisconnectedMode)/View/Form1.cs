@@ -27,9 +27,9 @@ namespace CoffeeShop_DisconnectedMode_
 
         private void Top3CheapestToolStripMenuItem_Click(object sender, EventArgs e) => logic.FindTop3CheapestSort(this.dataGridView2);
 
-        private void Top3CountriesSortToolStripMenuItem_Click(object sender, EventArgs e) => logic.FindTop3CountriesSort(this.dataGridView2);
+        private void Top3CountriesSortToolStripMenuItem_Click(object sender, EventArgs e) => logic.FindTop3CountriesSort(this.InfoTextBox);
 
-        private void Top3CountriesGramToolStripMenuItem_Click(object sender, EventArgs e) => logic.FindTop3CountriesGram(this.dataGridView2);
+        private void Top3CountriesGramToolStripMenuItem_Click(object sender, EventArgs e) => logic.FindTop3CountriesGram(this.InfoTextBox);
 
         private void Top3ArabicaGramToolStripMenuItem_Click(object sender, EventArgs e) => logic.FindTop3ArabicaGram(this.dataGridView2);
 
@@ -37,6 +37,6 @@ namespace CoffeeShop_DisconnectedMode_
 
         private void Top3GramToolStripMenuItem_Click(object sender, EventArgs e) => logic.FindTop3Gram(this.dataGridView2);
 
-        private void Top3ExpensiveToolStripMenuItem_Click(object sender, EventArgs e) => logic.Top3Expensive(this.dataGridView2);
+        private void Top3ExpensiveToolStripMenuItem_Click(object sender, EventArgs e) => logic.FindTop3Expensive(this.dataGridView2);
     }
 }

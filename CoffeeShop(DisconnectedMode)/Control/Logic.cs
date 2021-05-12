@@ -183,6 +183,7 @@ namespace CoffeeShop_DisconnectedMode_.Control
                 {
                     case 1:
                         {
+                            //Не работало с float, хоть в БД колонка имеет тип float
                             double price1 = double.Parse(searchForm.Controls["textBox1"].Text);
                             double price2 = double.Parse(searchForm.Controls["textBox2"].Text);
                             if (price1 > price2)

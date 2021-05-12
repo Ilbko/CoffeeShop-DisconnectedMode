@@ -191,19 +191,22 @@ namespace CoffeeShop_DisconnectedMode_
             this.label1.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.label1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.ForeColor = System.Drawing.Color.GreenYellow;
             this.label1.Location = new System.Drawing.Point(13, 28);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(65, 15);
+            this.label1.Size = new System.Drawing.Size(72, 15);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Все кофе";
+            this.label1.Text = "Весь кофе";
             // 
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(13, 47);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(300, 150);
+            this.dataGridView1.Size = new System.Drawing.Size(430, 150);
             this.dataGridView1.TabIndex = 2;
+            this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
+            this.dataGridView1.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.dataGridView1_UserDeletedRow);
             // 
             // label2
             // 
@@ -212,7 +215,7 @@ namespace CoffeeShop_DisconnectedMode_
             this.label2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label2.ForeColor = System.Drawing.Color.Orange;
-            this.label2.Location = new System.Drawing.Point(562, 28);
+            this.label2.Location = new System.Drawing.Point(12, 201);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(110, 15);
             this.label2.TabIndex = 3;
@@ -223,9 +226,9 @@ namespace CoffeeShop_DisconnectedMode_
             this.dataGridView2.AllowUserToAddRows = false;
             this.dataGridView2.AllowUserToDeleteRows = false;
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(372, 47);
+            this.dataGridView2.Location = new System.Drawing.Point(12, 219);
             this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.Size = new System.Drawing.Size(300, 150);
+            this.dataGridView2.Size = new System.Drawing.Size(430, 150);
             this.dataGridView2.TabIndex = 4;
             // 
             // label3
@@ -235,7 +238,7 @@ namespace CoffeeShop_DisconnectedMode_
             this.label3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label3.ForeColor = System.Drawing.Color.GreenYellow;
-            this.label3.Location = new System.Drawing.Point(519, 201);
+            this.label3.Location = new System.Drawing.Point(520, 28);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(152, 15);
             this.label3.TabIndex = 5;
@@ -246,12 +249,12 @@ namespace CoffeeShop_DisconnectedMode_
             this.InfoTextBox.BackColor = System.Drawing.SystemColors.Info;
             this.InfoTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.InfoTextBox.ForeColor = System.Drawing.Color.Green;
-            this.InfoTextBox.Location = new System.Drawing.Point(448, 219);
+            this.InfoTextBox.Location = new System.Drawing.Point(449, 47);
             this.InfoTextBox.Multiline = true;
             this.InfoTextBox.Name = "InfoTextBox";
             this.InfoTextBox.ReadOnly = true;
             this.InfoTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.InfoTextBox.Size = new System.Drawing.Size(223, 219);
+            this.InfoTextBox.Size = new System.Drawing.Size(223, 322);
             this.InfoTextBox.TabIndex = 6;
             // 
             // Form1
@@ -259,7 +262,7 @@ namespace CoffeeShop_DisconnectedMode_
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightGray;
-            this.ClientSize = new System.Drawing.Size(684, 450);
+            this.ClientSize = new System.Drawing.Size(684, 381);
             this.Controls.Add(this.InfoTextBox);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.dataGridView2);
@@ -270,6 +273,7 @@ namespace CoffeeShop_DisconnectedMode_
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

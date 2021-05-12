@@ -13,7 +13,7 @@ namespace CoffeeShop_DisconnectedMode_.Control
     {
         private void Updater(DataGridView grid)
         {
-            grid.DataSource = Communication.coffeeTableFound;
+            grid.DataSource = CoffeeModel.coffeeTableFound;
             grid.Update();
         }
 
@@ -34,7 +34,7 @@ namespace CoffeeShop_DisconnectedMode_.Control
 
         internal void FindCherry(DataGridView dataGridView2)
         {
-            Communication.coffeeTableFound = Communication.coffeeTable.AsEnumerable()
+            CoffeeModel.coffeeTableFound = CoffeeModel.coffeeTable.AsEnumerable()
                 .Where(x => (x["Coffee_Info"] as string).Contains("вишн")).CopyToDataTable();
 
             Updater(dataGridView2);
@@ -42,8 +42,8 @@ namespace CoffeeShop_DisconnectedMode_.Control
 
         internal void FindTop3CheapestSort(DataGridView dataGridView2)
         {
-            DataTable temp = Communication.coffeeTable.AsEnumerable().OrderBy(x => x["Coffee_Price"]).CopyToDataTable();
-            Communication.coffeeTableFound = temp.AsEnumerable().Take(3).CopyToDataTable();
+            DataTable temp = CoffeeModel.coffeeTable.AsEnumerable().OrderBy(x => x["Coffee_Price"]).CopyToDataTable();
+            CoffeeModel.coffeeTableFound = temp.AsEnumerable().Take(3).CopyToDataTable();
 
             Updater(dataGridView2);
         }
@@ -51,7 +51,7 @@ namespace CoffeeShop_DisconnectedMode_.Control
         internal void FindTop3CountriesSort(TextBox InfoTextBox)
         {
             Dictionary<string, int?> countries = new Dictionary<string, int?>();
-            foreach(DataRow item in Communication.coffeeTable.Rows)
+            foreach(DataRow item in CoffeeModel.coffeeTable.Rows)
             {
                 if (!countries.Any(x => x.Key == (item["Coffee_Country"] as string).ToLower()))
                     countries.Add(item["Coffee_Country"] as string, 1);
@@ -66,7 +66,7 @@ namespace CoffeeShop_DisconnectedMode_.Control
         internal void FindTop3CountriesGram(TextBox InfoTextBox)
         {
             Dictionary<string, int?> countries = new Dictionary<string, int?>();
-            foreach(DataRow item in Communication.coffeeTable.Rows)
+            foreach(DataRow item in CoffeeModel.coffeeTable.Rows)
             {
                 if (!countries.Any(x => x.Key == (item["Coffee_Country"] as string).ToLower()))
                     countries.Add(item["Coffee_Country"] as string, item["Coffee_Grams"] as int?);
@@ -80,32 +80,32 @@ namespace CoffeeShop_DisconnectedMode_.Control
 
         internal void FindTop3ArabicaGram(DataGridView dataGridView2)
         {
-            DataTable temp = Communication.coffeeTable.AsEnumerable().Where(x => (x["Coffee_Type"] as string).ToLower() == "арабика").OrderBy(x => x["Coffee_Grams"]).CopyToDataTable();
-            Communication.coffeeTableFound = temp.AsEnumerable().Reverse().Take(3).CopyToDataTable();
+            DataTable temp = CoffeeModel.coffeeTable.AsEnumerable().Where(x => (x["Coffee_Type"] as string).ToLower() == "арабика").OrderBy(x => x["Coffee_Grams"]).CopyToDataTable();
+            CoffeeModel.coffeeTableFound = temp.AsEnumerable().Reverse().Take(3).CopyToDataTable();
 
             Updater(dataGridView2);
         }
 
         internal void FindTop3RobustaGram(DataGridView dataGridView2)
         {
-            DataTable temp = Communication.coffeeTable.AsEnumerable().Where(x => (x["Coffee_Type"] as string).ToLower() == "робуста").OrderBy(x => x["Coffee_Grams"]).CopyToDataTable();
-            Communication.coffeeTableFound = temp.AsEnumerable().Reverse().Take(3).CopyToDataTable();
+            DataTable temp = CoffeeModel.coffeeTable.AsEnumerable().Where(x => (x["Coffee_Type"] as string).ToLower() == "робуста").OrderBy(x => x["Coffee_Grams"]).CopyToDataTable();
+            CoffeeModel.coffeeTableFound = temp.AsEnumerable().Reverse().Take(3).CopyToDataTable();
 
             Updater(dataGridView2);
         }
 
         internal void FindTop3Gram(DataGridView dataGridView2)
         {
-            DataTable temp = Communication.coffeeTable.AsEnumerable().OrderBy(x => x["Coffee_Grams"]).CopyToDataTable();
-            Communication.coffeeTableFound = temp.AsEnumerable().Reverse().Take(3).CopyToDataTable();
+            DataTable temp = CoffeeModel.coffeeTable.AsEnumerable().OrderBy(x => x["Coffee_Grams"]).CopyToDataTable();
+            CoffeeModel.coffeeTableFound = temp.AsEnumerable().Reverse().Take(3).CopyToDataTable();
 
             Updater(dataGridView2);
         }
 
         internal void FindTop3Expensive(DataGridView dataGridView2)
         {
-            DataTable temp = Communication.coffeeTable.AsEnumerable().OrderBy(x => x["Coffee_Price"]).CopyToDataTable();
-            Communication.coffeeTableFound = temp.AsEnumerable().Reverse().Take(3).CopyToDataTable();
+            DataTable temp = CoffeeModel.coffeeTable.AsEnumerable().OrderBy(x => x["Coffee_Price"]).CopyToDataTable();
+            CoffeeModel.coffeeTableFound = temp.AsEnumerable().Reverse().Take(3).CopyToDataTable();
 
             Updater(dataGridView2);
         }
@@ -127,7 +127,7 @@ namespace CoffeeShop_DisconnectedMode_.Control
                                 price2 = temp;
                             }
 
-                            Communication.coffeeTableFound = Communication.coffeeTable.AsEnumerable()
+                            CoffeeModel.coffeeTableFound = CoffeeModel.coffeeTable.AsEnumerable()
                                 .Where(x => x["Coffee_Price"] as double? >= price1 && x["Coffee_Price"] as double? <= price2)
                                 .CopyToDataTable();
                             break;
@@ -143,37 +143,37 @@ namespace CoffeeShop_DisconnectedMode_.Control
                                 gram2 = temp;
                             }
 
-                            Communication.coffeeTableFound = Communication.coffeeTable.AsEnumerable()
+                            CoffeeModel.coffeeTableFound = CoffeeModel.coffeeTable.AsEnumerable()
                                 .Where(x => x["Coffee_Grams"] as int? >= gram1 && x["Coffee_Grams"] as int? <= gram2)
                                 .CopyToDataTable();
                             break;
                         }
                     case 3:
                         {
-                            Communication.coffeeTableFound = Communication.coffeeTable.AsEnumerable()
+                            CoffeeModel.coffeeTableFound = CoffeeModel.coffeeTable.AsEnumerable()
                                 .Where(x => (x["Coffee_Country"] as string).ToLower() == ((searchForm.Controls["comboBox1"] as ComboBox).SelectedItem as string))
                                 .CopyToDataTable();
                             break;
                         }
                     case 4:
                         {
-                            DataTable temp = Communication.coffeeTable.AsEnumerable()
+                            DataTable temp = CoffeeModel.coffeeTable.AsEnumerable()
                                 .Where(x => (x["Coffee_Type"] as string).ToLower() == ((searchForm.Controls["comboBox2"] as ComboBox).SelectedItem as string))
                                 .OrderBy(y => y["Coffee_Price"])
                                 .Reverse()
                                 .CopyToDataTable();
 
-                            Communication.coffeeTableFound = temp.AsEnumerable().Take(3).CopyToDataTable();
+                            CoffeeModel.coffeeTableFound = temp.AsEnumerable().Take(3).CopyToDataTable();
                             break;
                         }
                     case 5:
                         {
-                            DataTable temp = Communication.coffeeTable.AsEnumerable()
+                            DataTable temp = CoffeeModel.coffeeTable.AsEnumerable()
                                 .Where(x => (x["Coffee_Type"] as string).ToLower() == ((searchForm.Controls["comboBox2"] as ComboBox).SelectedItem as string))
                                 .OrderBy(y => y["Coffee_Price"])
                                 .CopyToDataTable();
 
-                            Communication.coffeeTableFound = temp.AsEnumerable().Take(3).CopyToDataTable();
+                            CoffeeModel.coffeeTableFound = temp.AsEnumerable().Take(3).CopyToDataTable();
                             break;
                         }
                 }

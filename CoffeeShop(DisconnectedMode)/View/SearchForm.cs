@@ -48,7 +48,7 @@ namespace CoffeeShop_DisconnectedMode_.View
                         this.comboBox1.Enabled = true;
 
                         HashSet<string> countries = new HashSet<string>();
-                        foreach (DataRow item in Communication.coffeeTable.Rows)
+                        foreach (DataRow item in CoffeeModel.coffeeTable.Rows)
                         {
                             countries.Add((item["Coffee_Country"] as string).ToLower());
                         }
@@ -61,7 +61,7 @@ namespace CoffeeShop_DisconnectedMode_.View
                         this.comboBox2.Enabled = true;
 
                         HashSet<string> types = new HashSet<string>();
-                        foreach (DataRow item in Communication.coffeeTable.Rows)
+                        foreach (DataRow item in CoffeeModel.coffeeTable.Rows)
                         {
                             types.Add((item["Coffee_Type"] as string).ToLower());
                         }
@@ -74,7 +74,7 @@ namespace CoffeeShop_DisconnectedMode_.View
                         this.comboBox2.Enabled = true;
 
                         HashSet<string> types = new HashSet<string>();
-                        foreach (DataRow item in Communication.coffeeTable.Rows)
+                        foreach (DataRow item in CoffeeModel.coffeeTable.Rows)
                         {
                             types.Add((item["Coffee_Type"] as string).ToLower());
                         }

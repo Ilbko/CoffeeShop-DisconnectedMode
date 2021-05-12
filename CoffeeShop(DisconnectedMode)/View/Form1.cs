@@ -18,8 +18,8 @@ namespace CoffeeShop_DisconnectedMode_
         public Form1()
         {
             InitializeComponent();
-            this.dataGridView1.DataSource = Communication.coffeeTable;
-            this.dataGridView2.DataSource = Communication.coffeeTableFound;
+            this.dataGridView1.DataSource = CoffeeModel.coffeeTable;
+            this.dataGridView2.DataSource = CoffeeModel.coffeeTableFound;
             this.dataGridView1.Columns[0].ReadOnly = true;
         }
 
@@ -48,5 +48,11 @@ namespace CoffeeShop_DisconnectedMode_
         private void Top3ExpensiveSortToolStripMenuItem_Click(object sender, EventArgs e) => new SearchForm(4, dataGridView2).ShowDialog();
 
         private void Top3CheapestSortToolStripMenuItem_Click(object sender, EventArgs e) => new SearchForm(5, dataGridView2).ShowDialog();
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e) => CoffeeModel.SaveChanges(this.dataGridView1);
+
+        private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e) => CoffeeModel.isChanges = true;
+
+        private void dataGridView1_UserDeletedRow(object sender, DataGridViewRowEventArgs e) => CoffeeModel.isChanges = true;
     }
 }

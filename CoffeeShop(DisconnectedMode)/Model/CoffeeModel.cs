@@ -9,18 +9,27 @@ using System.Windows.Forms;
 
 namespace CoffeeShop_DisconnectedMode_.Control
 {
+    //Класс модели (контроллера)
     public static class CoffeeModel
     {
+        //ДатаТейблы всего кофе и найденного кофе
         public static DataTable coffeeTable;
         public static DataTable coffeeTableFound;
+
+        //Строка подключения к БД и команда выборки
         public static readonly string connStr = @"Data Source=COMPUTER\SQLEXPRESS;Initial Catalog=CoffeeDB;Integrated Security=True;MultipleActiveResultSets=True;";
         public static string sqlComm = "SELECT * FROM Coffee";
+
+        //Переменная "были ли изменения в основной таблице"
         public static bool isChanges = false;
 
+        //При первом обращении к этому классу выполняется заполнение главного ДатаТейбла кофе
         static CoffeeModel()
         {
             using (SqlConnection conn = new SqlConnection(connStr))
             {
+                //Подключение не асинхронное, ведь при установке источника данных для главного ДатаГрида нужна полная таблица.
+                //Вышеуказанное действие - первое обращение к классу модели, поэтому нужно сначала провести подключение, а потом устанавливать источник.
                 conn.Open();
 
                 SqlDataAdapter adapter = new SqlDataAdapter(sqlComm, conn);
@@ -28,16 +37,18 @@ namespace CoffeeShop_DisconnectedMode_.Control
                 adapter.Fill(set);
                 coffeeTable = set.Tables[0];
             }
-
-            //CoffeeModel.Init(ref coffeeTable);
         }
 
+        //Метод сохранения изменений в БД
         internal static void SaveChanges(DataGridView dataGridView1)
         {
+            //Если были изменения
             if (isChanges)
+                //Если пользователь захотел сохранить изменения
                 if (MessageBox.Show("Сохранить изменения в БД?", "Сохранение", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     using (SqlConnection conn = new SqlConnection(connStr))
                     {
+                        //Асинхронное подключение
                         conn.OpenAsync();
 
                         SqlDataAdapter adapter = new SqlDataAdapter(sqlComm, conn);
@@ -45,22 +56,22 @@ namespace CoffeeShop_DisconnectedMode_.Control
 
                         try
                         {
+                            //Попытка обновления таблицы в БД
                             adapter.Update(coffeeTable);
                         } catch (System.Data.SqlClient.SqlException e)
                         {
+                            //515 - Cannot insert the value NULL into column '%.*ls', table '%.*ls'; column does not allow nulls. %ls fails.
+                            //Если пустое какое-то с полей, которое не поддерживает null
                             if (e.Number == 515)
                             {
+                                //Если non-nullable поле пустое в какой-то записи, то оно заполняется значением по-умолчанию
                                 foreach (DataRow item in coffeeTable.Rows)
                                 {
-                                    //if ((item["Coffee_Name"] as string) == null)
-                                    //    item["Coffee_Name"] = "template";
-
+                                    //Если поле содержит null, то оно заполняется значением по-умолчанию. Иначе поле принимает своё же значение
                                     //as ОБЯЗАТЕЛЕН!
                                     //item["Coffee_Name"] = item["Coffee_Name"] ?? "template"; не сработает
                                     item["Coffee_Name"] = item["Coffee_Name"] as string ?? "template";
 
-                                    //if ((item["Coffee_Grams"] as int?) == null)
-                                    //    item["Coffee_Grams"] = 0;
                                     item["Coffee_Grams"] = item["Coffee_Grams"] as int? ?? 0;
 
                                     //if ((item["Coffee_Price"] as double?) == null)

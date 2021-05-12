@@ -12,14 +12,19 @@ using System.Windows.Forms;
 
 namespace CoffeeShop_DisconnectedMode_
 {
+    //Главная форма
     public partial class Form1 : Form
     {
+        //Объект класса логики
         public Logic logic = new Logic();
+        //Установка источников данных датаГридов (главного и поиска)
         public Form1()
         {
             InitializeComponent();
             this.dataGridView1.DataSource = CoffeeModel.coffeeTable;
             this.dataGridView2.DataSource = CoffeeModel.coffeeTableFound;
+            //Поскольку в первом датаГриде можно изменять записи, то нужно запретить изменять айди записи 
+            //или вводить его вручную (БД сама выдаёт айди записи)
             this.dataGridView1.Columns[0].ReadOnly = true;
         }
 

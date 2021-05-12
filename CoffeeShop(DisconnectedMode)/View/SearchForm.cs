@@ -11,8 +11,10 @@ using System.Windows.Forms;
 
 namespace CoffeeShop_DisconnectedMode_.View
 {
+    //Форма поиска
     public partial class SearchForm : Form
     {
+        //Режим поиска, логика и "ссылка" на датаГрид поиска
         private int mode;
         Logic logic = new Logic();
         DataGridView dataGridView2;
@@ -26,6 +28,7 @@ namespace CoffeeShop_DisconnectedMode_.View
             InitializeComponent();
             this.mode = mode;
             this.dataGridView2 = dataGridView2;
+            //В зависимости от режима включаются элементы окна
             switch (mode)
             {
                 case 1:
@@ -47,6 +50,8 @@ namespace CoffeeShop_DisconnectedMode_.View
                         this.label8.Enabled = true;
                         this.comboBox1.Enabled = true;
 
+                        //Для заполнения комбоБоксов создаётся хешСет (только уникальные значения), наполняющийся значениями определённых полей с таблицы
+                        //который потом заполняет комбоБокс
                         HashSet<string> countries = new HashSet<string>();
                         foreach (DataRow item in CoffeeModel.coffeeTable.Rows)
                         {

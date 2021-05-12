@@ -11,12 +11,14 @@ namespace CoffeeShop_DisconnectedMode_.Control
 {
     public class Logic
     {
+        //Метод обновления датаГрида поиска
         private void Updater(DataGridView grid)
         {
             grid.DataSource = CoffeeModel.coffeeTableFound;
             grid.Update();
         }
 
+        //Метод обновления текстБокса найденной информации
         private void Updater(TextBox box, Dictionary<string, int?> dict)
         {
             box.Text = string.Empty;
@@ -26,90 +28,153 @@ namespace CoffeeShop_DisconnectedMode_.Control
             }
         }
 
+        //Хендлер вводимого текста для текстБоксов цены в окне поиска
         internal void TextHandler(TextBox sender, KeyPressEventArgs e)
         {
             if (e.KeyChar != 8 && !char.IsDigit(e.KeyChar) && !(e.KeyChar == '.' && !sender.Text.Contains(".")))
                 e.Handled = true;
         }
 
+        //Метод поиска кофе, в описании которого упоминается вишня
         internal void FindCherry(DataGridView dataGridView2)
         {
+            //Первый способ обработки значений Null - не допускать их в выборку
             CoffeeModel.coffeeTableFound = CoffeeModel.coffeeTable.AsEnumerable()
-                .Where(x => (x["Coffee_Info"] as string).Contains("вишн")).CopyToDataTable();
+                .Where(x => x["Coffee_Info"] != null && (x["Coffee_Info"] as string).Contains("вишн")).CopyToDataTable();
 
             Updater(dataGridView2);
         }
 
+        //Метод поиска трёх самых дешёвых кофе
         internal void FindTop3CheapestSort(DataGridView dataGridView2)
         {
-            DataTable temp = CoffeeModel.coffeeTable.AsEnumerable().OrderBy(x => x["Coffee_Price"]).CopyToDataTable();
-            CoffeeModel.coffeeTableFound = temp.AsEnumerable().Take(3).CopyToDataTable();
+            //Второй способ обработки значений Null - заставить пользователя ввести значение в пустые клетки
+            try
+            {
+                //Сортировка кофе по цене
+                DataTable temp = CoffeeModel.coffeeTable.AsEnumerable().OrderBy(x => x["Coffee_Price"]).CopyToDataTable();
+                CoffeeModel.coffeeTableFound = temp.AsEnumerable().Take(3).CopyToDataTable();
 
-            Updater(dataGridView2);
+                Updater(dataGridView2);
+            } 
+            catch(System.ArgumentException e)
+            {
+                MessageBox.Show("Заполните пустые клетки цен кофе.");
+            }
         }
 
+        //Метод поиска топ-трёх стран по количеству сортов
         internal void FindTop3CountriesSort(TextBox InfoTextBox)
         {
             Dictionary<string, int?> countries = new Dictionary<string, int?>();
             foreach(DataRow item in CoffeeModel.coffeeTable.Rows)
             {
-                if (!countries.Any(x => x.Key == (item["Coffee_Country"] as string).ToLower()))
-                    countries.Add(item["Coffee_Country"] as string, 1);
-                else
-                    countries[item["Coffee_Country"] as string]++;
+                //Если страна не null
+                if (item["Coffee_Country"] as string != null)
+                {
+                    string temp = (item["Coffee_Country"] as string).ToLower();
+
+                    //Если страны нет в словаре
+                    if (!countries.ContainsKey(temp))
+                        countries.Add(temp, 1);
+                    else
+                        countries[temp]++;
+                }
             }
             countries = countries.OrderBy(x => x.Value).Reverse().Take(3).ToDictionary(y => y.Key, y => y.Value);
 
             Updater(InfoTextBox, countries);
         }
 
+        //Метод поиска топ-трёх стран по суммарному количеству граммов кофе 
         internal void FindTop3CountriesGram(TextBox InfoTextBox)
         {
-            Dictionary<string, int?> countries = new Dictionary<string, int?>();
+            Dictionary<string, int?> countries = new Dictionary<string, int?>();                 
             foreach(DataRow item in CoffeeModel.coffeeTable.Rows)
             {
-                if (!countries.Any(x => x.Key == (item["Coffee_Country"] as string).ToLower()))
-                    countries.Add(item["Coffee_Country"] as string, item["Coffee_Grams"] as int?);
-                else
-                    countries[item["Coffee_Country"] as string] += item["Coffee_Grams"] as int?;
+                if (item["Coffee_Country"] as string != null)
+                {
+                    string temp = (item["Coffee_Country"] as string).ToLower();                 
+
+                    if (item["Coffee_Grams"] as int? != null)
+                    {
+                        if (!countries.ContainsKey(temp))
+                            countries.Add(temp, item["Coffee_Grams"] as int?);
+                        else
+                            countries[temp] += item["Coffee_Grams"] as int?;
+                    }
+                }
             }
             countries = countries.OrderBy(x => x.Value).Reverse().Take(3).ToDictionary(y => y.Key, y => y.Value);
 
             Updater(InfoTextBox, countries);
         }
 
+        //Метод поиска топ-трёх арабики по граммам
         internal void FindTop3ArabicaGram(DataGridView dataGridView2)
         {
-            DataTable temp = CoffeeModel.coffeeTable.AsEnumerable().Where(x => (x["Coffee_Type"] as string).ToLower() == "арабика").OrderBy(x => x["Coffee_Grams"]).CopyToDataTable();
-            CoffeeModel.coffeeTableFound = temp.AsEnumerable().Reverse().Take(3).CopyToDataTable();
+            try
+            {
+                DataTable temp = CoffeeModel.coffeeTable.AsEnumerable().Where(x => (x["Coffee_Type"] as string).ToLower() == "арабика").OrderBy(x => x["Coffee_Grams"]).CopyToDataTable();
+                CoffeeModel.coffeeTableFound = temp.AsEnumerable().Reverse().Take(3).CopyToDataTable();
 
-            Updater(dataGridView2);
+                Updater(dataGridView2);
+            }
+            catch (System.ArgumentException e) 
+            {
+                MessageBox.Show("Заполните пустые клетки граммов кофе.");
+            }
         }
 
+        //то же самое, только с робустой
         internal void FindTop3RobustaGram(DataGridView dataGridView2)
         {
-            DataTable temp = CoffeeModel.coffeeTable.AsEnumerable().Where(x => (x["Coffee_Type"] as string).ToLower() == "робуста").OrderBy(x => x["Coffee_Grams"]).CopyToDataTable();
-            CoffeeModel.coffeeTableFound = temp.AsEnumerable().Reverse().Take(3).CopyToDataTable();
+            try
+            { 
+                DataTable temp = CoffeeModel.coffeeTable.AsEnumerable().Where(x => (x["Coffee_Type"] as string).ToLower() == "робуста").OrderBy(x => x["Coffee_Grams"]).CopyToDataTable();
+                CoffeeModel.coffeeTableFound = temp.AsEnumerable().Reverse().Take(3).CopyToDataTable();
 
-            Updater(dataGridView2);
+                Updater(dataGridView2);
+            }
+            catch (System.ArgumentException e)
+            {
+                MessageBox.Show("Заполните пустые клетки граммов кофе.");
+            }
         }
 
+        //Метод поиска топ-трёх кофе по граммам
         internal void FindTop3Gram(DataGridView dataGridView2)
         {
-            DataTable temp = CoffeeModel.coffeeTable.AsEnumerable().OrderBy(x => x["Coffee_Grams"]).CopyToDataTable();
-            CoffeeModel.coffeeTableFound = temp.AsEnumerable().Reverse().Take(3).CopyToDataTable();
+            try
+            { 
+                DataTable temp = CoffeeModel.coffeeTable.AsEnumerable().OrderBy(x => x["Coffee_Grams"]).CopyToDataTable();
+                CoffeeModel.coffeeTableFound = temp.AsEnumerable().Reverse().Take(3).CopyToDataTable();
 
-            Updater(dataGridView2);
+                Updater(dataGridView2);
+            }
+            catch (System.ArgumentException e)
+            {
+                MessageBox.Show("Заполните пустые клетки цен кофе.");
+            }
         }
 
+        //Метод поиска трёх самых дорогих кофе
         internal void FindTop3Expensive(DataGridView dataGridView2)
         {
-            DataTable temp = CoffeeModel.coffeeTable.AsEnumerable().OrderBy(x => x["Coffee_Price"]).CopyToDataTable();
-            CoffeeModel.coffeeTableFound = temp.AsEnumerable().Reverse().Take(3).CopyToDataTable();
+            try
+            { 
+                DataTable temp = CoffeeModel.coffeeTable.AsEnumerable().OrderBy(x => x["Coffee_Price"]).CopyToDataTable();
+                CoffeeModel.coffeeTableFound = temp.AsEnumerable().Reverse().Take(3).CopyToDataTable();
 
-            Updater(dataGridView2);
+                Updater(dataGridView2);
+            }
+            catch (System.ArgumentException e)
+            {
+                MessageBox.Show("Заполните пустые клетки цен кофе.");
+            }
         }
 
+        //Метод клика кнопки "найти" в форме поиска
         internal void ButtonFind(int mode, SearchForm searchForm, DataGridView dataGridView2)
         {
             try
